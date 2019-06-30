@@ -5,31 +5,63 @@ from google.oauth2 import service_account
 from PIL import Image
 import os
 import mimetypes
+import random
 
 GOOGLE_STORAGE_PROJECT = os.environ['GOOGLE_STORAGE_PROJECT']
 GOOGLE_STORAGE_BUCKET = os.environ['GOOGLE_STORAGE_BUCKET']
 
 app = Flask(__name__)
 
-FIRST_NAMES = ['Herbie', 'Sprinkles', 'Boris', 'Dave', 'Randy', 'Captain']
-LAST_NAMES = ['Starbelly', 'Fisherton', 'McCoy']
+# FIRST_NAMES = ['Herbie', 'Sprinkles', 'Boris', 'Dave', 'Randy', 'Captain']
+# LAST_NAMES = ['Starbelly', 'Fisherton', 'McCoy']
+#
+# BASES = ['jellyfish', 'starfish', 'crab', 'narwhal', 'tealfish', 'goldfish']
+# EYES = ['big', 'joy', 'wink', 'sleepy', 'content']
+# MOUTH = ['happy', 'surprised', 'pleased', 'cute']
+#
+#
+# INT_ATTRIBUTES = [5, 2, 3, 4, 8]
+# FLOAT_ATTRIBUTES = [1.4, 2.3, 11.7, 90.2, 1.2]
+# STR_ATTRIBUTES = [
+#     'happy',
+#     'sad',
+#     'sleepy',
+#     'boring'
+# ]
+# BOOST_ATTRIBUTES = [10, 40, 30]
+# PERCENT_BOOST_ATTRIBUTES = [5, 10, 15]
+# NUMBER_ATTRIBUTES = [1, 2, 1, 1]
 
-BASES = ['jellyfish', 'starfish', 'crab', 'narwhal', 'tealfish', 'goldfish']
-EYES = ['big', 'joy', 'wink', 'sleepy', 'content']
-MOUTH = ['happy', 'surprised', 'pleased', 'cute']
+# Beginning Custom Shalabuck Info
+ADJECTIVES = ['Warm', 'Cold', 'Red', 'Lazy', 'Happy', 'Legit', 'Angry',
+              'Sleepy', 'Good-Smelling', 'Rosy', 'Green', 'Boosted']
+NOUNS = ['Elf', 'Dwarf', 'Starfish', 'Crab', 'Monster', 'Nerd', 'Archeologist',
+         'Moon', 'Mermaid', 'Television', 'Internet', 'Dancer']
+
+# Helper function to get random hex color, based off: https://stackoverflow.com/questions/36580195/random-32-hexadecimal-digits-in-python?rq=1
 
 
-INT_ATTRIBUTES = [5, 2, 3, 4, 8]
-FLOAT_ATTRIBUTES = [1.4, 2.3, 11.7, 90.2, 1.2]
-STR_ATTRIBUTES = [
-    'happy',
-    'sad',
-    'sleepy',
-    'boring'
-]
-BOOST_ATTRIBUTES = [10, 40, 30]
-PERCENT_BOOST_ATTRIBUTES = [5, 10, 15]
-NUMBER_ATTRIBUTES = [1, 2, 1, 1]
+def random_hex_color():
+    def r(): return random.randint(0, 255)
+    return ('#%02X%02X%02X' % (r(), r(), r()))
+
+
+@app.route('/api/shalabuck/<token_id>')
+def shalabuck(token_id):
+    token_id = int(token_id)
+    num_adjectives = len(ADJECTIVES)
+    num_nouns = len(NOUNS)
+    shalabuck_phrase = "%s %s" % (
+        ADJECTIVES[token_id % num_adjectives], NOUNS[token_id % num_nouns]
+    )
+    shalabuck_color = random_hex_color()
+
+    return jsonify({
+        'phrase': shalabuck_phrase,
+        'description': "Shalabuck token minted with the phrase: %s" % (shalabuck_phrase),
+        'external_url': 'https://openseacreatures.io/%s' % token_id,
+        'color': shalabuck_color
+    })
 
 
 @app.route('/api/creature/<token_id>')
@@ -37,7 +69,8 @@ def creature(token_id):
     token_id = int(token_id)
     num_first_names = len(FIRST_NAMES)
     num_last_names = len(LAST_NAMES)
-    creature_name = "%s %s" % (FIRST_NAMES[token_id % num_first_names], LAST_NAMES[token_id % num_last_names])
+    creature_name = "%s %s" % (
+        FIRST_NAMES[token_id % num_first_names], LAST_NAMES[token_id % num_last_names])
 
     base = BASES[token_id % len(BASES)]
     eyes = EYES[token_id % len(EYES)]
@@ -54,10 +87,12 @@ def creature(token_id):
     _add_attribute(attributes, 'level', INT_ATTRIBUTES, token_id)
     _add_attribute(attributes, 'stamina', FLOAT_ATTRIBUTES, token_id)
     _add_attribute(attributes, 'personality', STR_ATTRIBUTES, token_id)
-    _add_attribute(attributes, 'aqua_power', BOOST_ATTRIBUTES, token_id, display_type="boost_number")
-    _add_attribute(attributes, 'stamina_increase', PERCENT_BOOST_ATTRIBUTES, token_id, display_type="boost_percentage")
-    _add_attribute(attributes, 'generation', NUMBER_ATTRIBUTES, token_id, display_type="number")
-
+    _add_attribute(attributes, 'aqua_power', BOOST_ATTRIBUTES,
+                   token_id, display_type="boost_number")
+    _add_attribute(attributes, 'stamina_increase', PERCENT_BOOST_ATTRIBUTES,
+                   token_id, display_type="boost_percentage")
+    _add_attribute(attributes, 'generation', NUMBER_ATTRIBUTES,
+                   token_id, display_type="number")
 
     return jsonify({
         'name': creature_name,
@@ -92,19 +127,22 @@ def factory(token_id):
         name = "One OpenSea creature"
         description = "When you purchase this option, you will receive a single OpenSea creature of a random variety. " \
                       "Enjoy and take good care of your aquatic being!"
-        image_url = _compose_image(['images/factory/egg.png'], token_id, "factory")
+        image_url = _compose_image(
+            ['images/factory/egg.png'], token_id, "factory")
         num_inside = 1
     elif token_id == 1:
         name = "Four OpenSea creatures"
         description = "When you purchase this option, you will receive four OpenSea creatures of random variety. " \
                       "Enjoy and take good care of your aquatic beings!"
-        image_url = _compose_image(['images/factory/four-eggs.png'], token_id, "factory")
+        image_url = _compose_image(
+            ['images/factory/four-eggs.png'], token_id, "factory")
         num_inside = 4
     elif token_id == 2:
         name = "One OpenSea creature lootbox"
         description = "When you purchase this option, you will receive one lootbox, which can be opened to reveal three " \
                       "OpenSea creatures of random variety. Enjoy and take good care of these cute aquatic beings!"
-        image_url = _compose_image(['images/box/lootbox.png'], token_id, "factory")
+        image_url = _compose_image(
+            ['images/box/lootbox.png'], token_id, "factory")
         num_inside = 3
 
     attributes = []
@@ -148,10 +186,13 @@ def _compose_image(image_files, token_id, path="creature"):
 
 
 def _get_bucket():
-    credentials = service_account.Credentials.from_service_account_file('credentials/google-storage-credentials.json')
+    credentials = service_account.Credentials.from_service_account_file(
+        'credentials/google-storage-credentials.json')
     if credentials.requires_scopes:
-        credentials = credentials.with_scopes(['https://www.googleapis.com/auth/devstorage.read_write'])
-    client = storage.Client(project=GOOGLE_STORAGE_PROJECT, credentials=credentials)
+        credentials = credentials.with_scopes(
+            ['https://www.googleapis.com/auth/devstorage.read_write'])
+    client = storage.Client(
+        project=GOOGLE_STORAGE_PROJECT, credentials=credentials)
     return client.get_bucket(GOOGLE_STORAGE_BUCKET)
 
 
