@@ -6,7 +6,7 @@ import "./Shalabuck.sol";
 import "./ShalabuckLootBox.sol";
 import "./Strings.sol";
 
-contract ShalabuckFactory is Shalabuck, Ownable {
+contract ShalabuckFactory is Ownable, Shalabuck {
   using Strings for string;
 
   address public proxyRegistryAddress;
@@ -56,11 +56,11 @@ contract ShalabuckFactory is Shalabuck, Ownable {
     assert(address(proxyRegistry.proxies(owner())) == msg.sender || owner() == msg.sender || msg.sender == lootBoxNftAddress);
     require(canMint(_optionId));
 
-    Shalabuck shalabuck = creature(nftAddress);
+    Shalabuck shalabuck = Shalabuck(nftAddress);
     if (_optionId == SINGLE_SHALABUCK_OPTION) {
       shalabuck.mintTo(_toAddress);
     } else if (_optionId == MULTIPLE_SHALABUCK_OPTION) {
-      for (uint256 i = 0; i < NUM_SHALABUCKS_IN_MULTIPLE_SHALABUCK_OPTION; i++) {
+      for (uint256 i = 0; i < NUM_SHALABUCK_IN_MULTIPLE_SHALABUCK_OPTION; i++) {
         shalabuck.mintTo(_toAddress);
       }
     } else if (_optionId == LOOTBOX_OPTION) {

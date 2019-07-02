@@ -11,7 +11,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
  * CreatureLootBox - a tradeable loot box of Creatures.
  */
 contract ShalabuckLootBox is TradeableERC721Token {
-    uint256 NUM_CREATURES_PER_BOX = 3;
+    uint256 NUM_SHALABUCK_PER_BOX = 3;
     uint256 OPTION_ID = 0;
     address factoryAddress;
 
@@ -23,7 +23,7 @@ contract ShalabuckLootBox is TradeableERC721Token {
         require(ownerOf(_tokenId) == msg.sender);
 
         // Insert custom logic for configuring the item here.
-        for (uint256 i = 0; i < NUM_SHALABUCKS_PER_BOX; i++) {
+        for (uint256 i = 0; i < NUM_SHALABUCK_PER_BOX; i++) {
             // Mint the ERC721 item(s).
             Factory factory = Factory(factoryAddress);
             factory.mint(OPTION_ID, msg.sender);

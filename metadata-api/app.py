@@ -12,25 +12,25 @@ GOOGLE_STORAGE_BUCKET = os.environ['GOOGLE_STORAGE_BUCKET']
 
 app = Flask(__name__)
 
-# FIRST_NAMES = ['Herbie', 'Sprinkles', 'Boris', 'Dave', 'Randy', 'Captain']
-# LAST_NAMES = ['Starbelly', 'Fisherton', 'McCoy']
-#
-# BASES = ['jellyfish', 'starfish', 'crab', 'narwhal', 'tealfish', 'goldfish']
-# EYES = ['big', 'joy', 'wink', 'sleepy', 'content']
-# MOUTH = ['happy', 'surprised', 'pleased', 'cute']
-#
-#
-# INT_ATTRIBUTES = [5, 2, 3, 4, 8]
-# FLOAT_ATTRIBUTES = [1.4, 2.3, 11.7, 90.2, 1.2]
-# STR_ATTRIBUTES = [
-#     'happy',
-#     'sad',
-#     'sleepy',
-#     'boring'
-# ]
-# BOOST_ATTRIBUTES = [10, 40, 30]
-# PERCENT_BOOST_ATTRIBUTES = [5, 10, 15]
-# NUMBER_ATTRIBUTES = [1, 2, 1, 1]
+FIRST_NAMES = ['Herbie', 'Sprinkles', 'Boris', 'Dave', 'Randy', 'Captain']
+LAST_NAMES = ['Starbelly', 'Fisherton', 'McCoy']
+
+BASES = ['jellyfish', 'starfish', 'crab', 'narwhal', 'tealfish', 'goldfish']
+EYES = ['big', 'joy', 'wink', 'sleepy', 'content']
+MOUTH = ['happy', 'surprised', 'pleased', 'cute']
+
+
+INT_ATTRIBUTES = [5, 2, 3, 4, 8]
+FLOAT_ATTRIBUTES = [1.4, 2.3, 11.7, 90.2, 1.2]
+STR_ATTRIBUTES = [
+    'happy',
+    'sad',
+    'sleepy',
+    'boring'
+]
+BOOST_ATTRIBUTES = [10, 40, 30]
+PERCENT_BOOST_ATTRIBUTES = [5, 10, 15]
+NUMBER_ATTRIBUTES = [1, 2, 1, 1]
 
 # Beginning Custom Shalabuck Info
 ADJECTIVES = ['Warm', 'Cold', 'Red', 'Lazy', 'Happy', 'Legit', 'Angry',
@@ -55,12 +55,27 @@ def shalabuck(token_id):
         ADJECTIVES[token_id % num_adjectives], NOUNS[token_id % num_nouns]
     )
     shalabuck_color = random_hex_color()
+    # TODO: Customize for our image
+    # image_url = _compose_image()
+    # image_url = _compose_image(['images/bases/base-%s.png' % base,
+    #                             'images/eyes/eyes-%s.png' % eyes,
+    #                             'images/mouths/mouth-%s.png' % mouth],
+    #                            token_id)
+    attributes = []
+    # _add_attribute(attributes, 'shalabuck_phrase', SHALABUCK_PHRASES, token_id)
 
+    # return jsonify({
+    #     'phrase': shalabuck_phrase,
+    #     'description': "Shalabuck token minted with the phrase: %s" % (shalabuck_phrase),
+    #     'external_url': 'https://openseacreatures.io/%s' % token_id,
+    #     'color': shalabuck_color
+    # })
     return jsonify({
-        'phrase': shalabuck_phrase,
-        'description': "Shalabuck token minted with the phrase: %s" % (shalabuck_phrase),
+        'name': shalabuck_phrase,
+        'description': "Shalabuck token awarded for Excellence In Friendship.",
+        'image': image_url,
         'external_url': 'https://openseacreatures.io/%s' % token_id,
-        'color': shalabuck_color
+        'attributes': attributes,
     })
 
 

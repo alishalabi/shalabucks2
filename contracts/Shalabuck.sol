@@ -11,7 +11,7 @@ contract Shalabuck is TradeableERC721Token {
   constructor(address _proxyRegistryAddress) TradeableERC721Token("Shalabuck", "OSC", _proxyRegistryAddress) public {  }
 
   function baseTokenURI() public view returns (string memory) {
-    return "https://opensea-creatures-api.herokuapp.com/api/shalabuck/";
+    return "https://opensea-creatures-api.herokuapp.com/api/creature/";
     /* Ask Dani */
   }
 }
