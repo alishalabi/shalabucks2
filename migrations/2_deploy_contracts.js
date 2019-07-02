@@ -1,6 +1,6 @@
-const Creature = artifacts.require("./Creature.sol");
-const CreatureFactory = artifacts.require("./CreatureFactory.sol")
-const CreatureLootBox = artifacts.require("./CreatureLootBox.sol");
+const Shalabuck = artifacts.require("./Shalabuck.sol");
+const ShalabuckFactory = artifacts.require("./ShalabuckFactory.sol")
+const ShalabuckLootBox = artifacts.require("./ShalabuckLootBox.sol");
 
 module.exports = function(deployer, network) {
   // OpenSea proxy registry addresses for rinkeby and mainnet.
@@ -11,8 +11,8 @@ module.exports = function(deployer, network) {
     proxyRegistryAddress = "0xa5409ec958c83c3f309868babaca7c86dcb077c1";
   }
 
-  deployer.deploy(Creature, proxyRegistryAddress, {gas: 5000000});
-  
+  deployer.deploy(Shalabuck, proxyRegistryAddress, {gas: 5000000});
+
   // Uncomment this if you want initial item sale support.
   // deployer.deploy(Creature, proxyRegistryAddress, {gas: 5000000}).then(() => {
   //   return deployer.deploy(CreatureFactory, proxyRegistryAddress, Creature.address, {gas: 7000000});
