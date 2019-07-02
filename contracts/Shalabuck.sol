@@ -4,7 +4,7 @@ import "./TradeableERC721Token.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /**
- * @title Creature
+ * @title Shalabuck 
  * Creature - a contract for my non-fungible creatures.
  */
 contract Shalabuck is TradeableERC721Token {

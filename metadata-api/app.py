@@ -12,25 +12,25 @@ GOOGLE_STORAGE_BUCKET = os.environ['GOOGLE_STORAGE_BUCKET']
 
 app = Flask(__name__)
 
-FIRST_NAMES = ['Herbie', 'Sprinkles', 'Boris', 'Dave', 'Randy', 'Captain']
-LAST_NAMES = ['Starbelly', 'Fisherton', 'McCoy']
-
-BASES = ['jellyfish', 'starfish', 'crab', 'narwhal', 'tealfish', 'goldfish']
-EYES = ['big', 'joy', 'wink', 'sleepy', 'content']
-MOUTH = ['happy', 'surprised', 'pleased', 'cute']
-
-
-INT_ATTRIBUTES = [5, 2, 3, 4, 8]
-FLOAT_ATTRIBUTES = [1.4, 2.3, 11.7, 90.2, 1.2]
-STR_ATTRIBUTES = [
-    'happy',
-    'sad',
-    'sleepy',
-    'boring'
-]
-BOOST_ATTRIBUTES = [10, 40, 30]
-PERCENT_BOOST_ATTRIBUTES = [5, 10, 15]
-NUMBER_ATTRIBUTES = [1, 2, 1, 1]
+# FIRST_NAMES = ['Herbie', 'Sprinkles', 'Boris', 'Dave', 'Randy', 'Captain']
+# LAST_NAMES = ['Starbelly', 'Fisherton', 'McCoy']
+#
+# BASES = ['jellyfish', 'starfish', 'crab', 'narwhal', 'tealfish', 'goldfish']
+# EYES = ['big', 'joy', 'wink', 'sleepy', 'content']
+# MOUTH = ['happy', 'surprised', 'pleased', 'cute']
+#
+#
+# INT_ATTRIBUTES = [5, 2, 3, 4, 8]
+# FLOAT_ATTRIBUTES = [1.4, 2.3, 11.7, 90.2, 1.2]
+# STR_ATTRIBUTES = [
+#     'happy',
+#     'sad',
+#     'sleepy',
+#     'boring'
+# ]
+# BOOST_ATTRIBUTES = [10, 40, 30]
+# PERCENT_BOOST_ATTRIBUTES = [5, 10, 15]
+# NUMBER_ATTRIBUTES = [1, 2, 1, 1]
 
 # Beginning Custom Shalabuck Info
 ADJECTIVES = ['Warm', 'Cold', 'Red', 'Lazy', 'Happy', 'Legit', 'Angry',
@@ -111,7 +111,7 @@ def creature(token_id):
 
     return jsonify({
         'name': creature_name,
-        'description': "Friendly OpenSea Creature that enjoys long swims in the ocean.",
+        'description': "Cusomtizing Shalabuck Metadata.",
         'image': image_url,
         'external_url': 'https://openseacreatures.io/%s' % token_id,
         'attributes': attributes
