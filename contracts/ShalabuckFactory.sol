@@ -6,7 +6,10 @@ import "./Shalabuck.sol";
 import "./ShalabuckLootBox.sol";
 import "./Strings.sol";
 
+/// @title ShalabuckFactory
+/// @author Ali Shalabi
 contract ShalabuckFactory is Ownable, Shalabuck {
+  /// @dev Strings are used to manipulate string data type (ex: concatination)
   using Strings for string;
 
   address public proxyRegistryAddress;
@@ -14,42 +17,45 @@ contract ShalabuckFactory is Ownable, Shalabuck {
   address public lootBoxNftAddress;
   string public baseURI = "https://opensea-creatures-api.herokuapp.com/api/factory/";
 
-  /**
-   * Enforce the existence of only 100 OpenSea creatures.
-   */
+  /// @dev Caps Shalabuck supply to 100 total tokens
   uint256 SHALABUCK_SUPPLY = 100;
 
-  /**
-   * Three different options for minting Creatures (basic, premium, and gold).
-   */
+  /// @notice Defines options for token creation
   uint256 NUM_OPTIONS = 3;
   uint256 SINGLE_SHALABUCK_OPTION = 0;
   uint256 MULTIPLE_SHALABUCK_OPTION = 1;
   uint256 LOOTBOX_OPTION = 2;
   uint256 NUM_SHALABUCK_IN_MULTIPLE_SHALABUCK_OPTION = 4;
 
+  /// @dev Correlates with the TradeableERC721Token contract
   constructor(address _proxyRegistryAddress, address _nftAddress) public {
     proxyRegistryAddress = _proxyRegistryAddress;
     nftAddress = _nftAddress;
     lootBoxNftAddress = address(new ShalabuckLootBox(_proxyRegistryAddress, address(this)));
   }
 
+  /// @returns String
   function name() external view returns (string memory) {
     return "OpenSeaCreature Item Sale";
   }
 
+  /// @returns String
   function symbol() external view returns (string memory) {
     return "CPF";
   }
 
+  /// @returns Boolean
   function supportsFactoryInterface() public view returns (bool) {
     return true;
   }
 
+  /// @returns Uint256
   function numOptions() public view returns (uint256) {
     return NUM_OPTIONS;
   }
 
+  /// @notice Function that allows our contract to mint tokens
+  /// @dev Relies on the inherited mintTo() method from TradeableERC721Token.sol
   function mint(uint256 _optionId, address _toAddress) public {
     // Must be sent from the owner proxy or owner.
     ProxyRegistry proxyRegistry = ProxyRegistry(proxyRegistryAddress);
@@ -69,6 +75,8 @@ contract ShalabuckFactory is Ownable, Shalabuck {
     }
   }
 
+  /// @notice Ensures that mint request is valid (cannot create duplicates)
+  /// @returns Boolean
   function canMint(uint256 _optionId) public view returns (bool) {
     if (_optionId >= NUM_OPTIONS) {
       return false;
@@ -96,18 +104,12 @@ contract ShalabuckFactory is Ownable, Shalabuck {
     );
   }
 
-  /**
-   * Hack to get things to work automatically on OpenSea.
-   * Use transferFrom so the frontend doesn't have to worry about different method names.
-   */
+  /// @dev Designed to work directly with OpenSea.io
   function transferFrom(address _from, address _to, uint256 _tokenId) public {
     mint(_tokenId, _to);
   }
 
-  /**
-   * Hack to get things to work automatically on OpenSea.
-   * Use isApprovedForAll so the frontend doesn't have to worry about different method names.
-   */
+  /// @dev Designed to work directly with OpenSea.io
   function isApprovedForAll(
     address _owner,
     address _operator
@@ -128,10 +130,7 @@ contract ShalabuckFactory is Ownable, Shalabuck {
     return false;
   }
 
-  /**
-   * Hack to get things to work automatically on OpenSea.
-   * Use isApprovedForAll so the frontend doesn't have to worry about different method names.
-   */
+  /// @dev Designed to work directly with OpenSea.io
   function ownerOf(uint256 _tokenId) public view returns (address _owner) {
     return owner();
   }

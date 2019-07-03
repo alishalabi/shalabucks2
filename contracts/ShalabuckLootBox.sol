@@ -5,6 +5,9 @@ import "./Shalabuck.sol";
 import "./Factory.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
+/// @dev NOTICE! Contract not fully utilized, designed for future builds
+
+
 /**
  * @title CreatureLootBox
  *
